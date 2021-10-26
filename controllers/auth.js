@@ -44,7 +44,7 @@ const loginUser = async(req, res = response ) => {
 };
 
 const createUser = async(req, res = response ) => {
-    const { age, sex, name, email, password  } = req.body;
+    const { email, password  } = req.body;
     try {
         let user = await  User.findOne({ email });
 
@@ -77,7 +77,6 @@ const createUser = async(req, res = response ) => {
 
 const getToken = async(req,  res = response) => {
     const { _id, age, sex, name } = req;
-    console.log(_id, age, sex, name )
 
     const token = await generateJWT( _id, age, sex, name);
 
