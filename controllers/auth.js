@@ -1,15 +1,15 @@
 const { response } = require("express");
-const bcrypt = require("bcryptjs");
+const bcrypt       = require("bcryptjs");
 
-const User = require("../models/User");
+// Require Own Modules
+const User            = require("../models/Users");
 const { generateJWT } = require('../helpers/jwt');
 
 const loginUser = async(req, res = response ) => {
     const { email, password } = req.body;
 
     try {
-        const user = await  User.findOne({ email });
-        
+        const user = await  User.findOne({ email }).exec();
 
         if(!user) {
             return res.status(400).json({
@@ -29,12 +29,12 @@ const loginUser = async(req, res = response ) => {
 
         const token = await generateJWT(user._id, user.age, user.sex, user.name);
 
-        res.status(201).json({
+        return res.status(201).json({
             ok   : true,
             token,
         });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             ok: false,
             msg: "Please inform about this error with the admin"
         });
@@ -45,8 +45,9 @@ const loginUser = async(req, res = response ) => {
 
 const createUser = async(req, res = response ) => {
     const { email, password  } = req.body;
+
     try {
-        let user = await  User.findOne({ email });
+        let user = await  User.findOne({ email }).exec();
 
         if (user) {
             return res.status(400).json({
@@ -62,12 +63,12 @@ const createUser = async(req, res = response ) => {
 
         const token = await generateJWT(user._id, user.age, user.sex, user.name);
     
-        res.status(201).json({
+        return res.status(201).json({
             ok : true,
             token,
         });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             ok : false,
             msg : "Inform about this to the admin",
         });
@@ -76,11 +77,16 @@ const createUser = async(req, res = response ) => {
 };
 
 const getToken = async(req,  res = response) => {
-    const { _id, age, sex, name } = req;
+    const {
+        _id,
+        age,
+        sex,
+        name,
+    } = res.locals.token;
 
     const token = await generateJWT( _id, age, sex, name);
 
-    res.status(201).json({
+    return res.status(201).json({
         ok: true,
         token
     });
