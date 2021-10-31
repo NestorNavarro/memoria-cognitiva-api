@@ -10,23 +10,26 @@ const saveResult = async (req, res) => {
             return res.status(403).send({ err : "You can only update your own results" });
         }
 
-        const user = await UserModel.find({ id : userId }).exec();
+        const user = await UserModel.findOne({ _id : userId }).exec();
 
         if (!user) {
             return res.status(404).send({ err : "User not found" });
         }
 
         const { score } = req.body;
-
         const parseNumber = value => !isNaN(parseFloat(value)) ? parseFloat(value) : 0;
 
-        const total   = parseNumber(user[type].total);
+        const total   = parseNumber(user[type].total) + 1;
         const best    = parseNumber(user[type].best);
         const average = parseNumber(user[type].average);
-
-        user[type].best    = score > best ? score : best;
-        user[type].average = parseNumber((average + score) / total);
-        user[type].total   = total + 1;
+  
+        user[type].total   = total;
+        if ( type === "cards") {
+            user[type].best = score < best ? score : best
+        } else {
+            user[type].best = score > best ? score : best
+        }
+        user[type].average = total > 0 ? parseNumber((average + score) / total) : score;
 
         await user.save();
 

@@ -32,6 +32,11 @@ const loginUser = async(req, res = response ) => {
         return res.status(201).json({
             ok   : true,
             token,
+            cardTest    : user.cards,
+            figureTest  : user.figures,
+            numberTest  : user.numbers,
+            phrasesTest : user.phrases,
+            wordsTest   : user.words,
         });
     } catch (error) {
         return res.status(500).json({
@@ -66,6 +71,11 @@ const createUser = async(req, res = response ) => {
         return res.status(201).json({
             ok : true,
             token,
+            cardTest    : user.cards,
+            figureTest  : user.figures,
+            numberTest  : user.numbers,
+            phrasesTest : user.phrases,
+            wordsTest   : user.words,
         });
     } catch (error) {
         return res.status(500).json({
@@ -84,11 +94,18 @@ const getToken = async(req,  res = response) => {
         name,
     } = res.locals.token;
 
+    const user = await  User.findOne({ _id }).exec();
+
     const token = await generateJWT( _id, age, sex, name);
 
     return res.status(201).json({
         ok: true,
-        token
+        token,
+        cardTest    : user.cards,
+        figureTest  : user.figures,
+        numberTest  : user.numbers,
+        phrasesTest : user.phrases,
+        wordsTest   : user.words,
     });
 };
 

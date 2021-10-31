@@ -13,7 +13,7 @@ router.post("/:type/:userId",
         param("type").isIn(types).notEmpty(),
         param("userId").isString().notEmpty(),
         check("score").isNumeric().notEmpty().customSanitizer(value => Number(value)),
-        validateFiles,
+        validatorJWT,
     ]
 ,StatisticsController.saveResult);
 
