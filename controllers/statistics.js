@@ -32,8 +32,14 @@ const saveResult = async (req, res) => {
         user[type].average = total > 0 ? parseNumber((average + score) / total) : score;
 
         await user.save();
-
-        return res.status(200).send("ok");
+        console.log(user[type]);
+        return res.status(200).json({
+            ok     : true,
+            [`${type}Test`] : {
+                best    : user[type].best,
+                average : user[type].average
+            }
+        });
     } catch (err) {
         console.error("[StatisticsController.saveResult] ", err);
 

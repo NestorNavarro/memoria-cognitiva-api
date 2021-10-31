@@ -32,11 +32,11 @@ const loginUser = async(req, res = response ) => {
         return res.status(201).json({
             ok   : true,
             token,
-            cardTest    : user.cards,
-            figureTest  : user.figures,
-            numberTest  : user.numbers,
-            phrasesTest : user.phrases,
             wordsTest   : user.words,
+            cardsTest   : user.cards,
+            phrasesTest : user.phrases,
+            numbersTest : user.numbers,
+            figuresTest : user.figures,
         });
     } catch (error) {
         return res.status(500).json({
@@ -71,11 +71,11 @@ const createUser = async(req, res = response ) => {
         return res.status(201).json({
             ok : true,
             token,
-            cardTest    : user.cards,
-            figureTest  : user.figures,
-            numberTest  : user.numbers,
-            phrasesTest : user.phrases,
             wordsTest   : user.words,
+            cardsTest   : user.cards,
+            phrasesTest : user.phrases,
+            numbersTest : user.numbers,
+            figuresTest : user.figures,
         });
     } catch (error) {
         return res.status(500).json({
@@ -101,11 +101,11 @@ const getToken = async(req,  res = response) => {
     return res.status(201).json({
         ok: true,
         token,
-        cardTest    : user.cards,
-        figureTest  : user.figures,
-        numberTest  : user.numbers,
-        phrasesTest : user.phrases,
-        wordsTest   : user.words,
+        cardsTest    : user.cards,
+        wordsTest    : user.words,
+        figuresTest  : user.figures,
+        numbersTest  : user.numbers,
+        phrasesTest  : user.phrases,
     });
 };
 
