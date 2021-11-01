@@ -135,8 +135,8 @@ const deleteNote = async(req, res = response) => {
                 msg: "The user is not allowed to do this action",
             });
         }
-        await Notes.findOneAndDelete(noteId);
-        return res.status(201).json({ ok: true });
+        await Notes.findOneAndDelete({ _id : noteId });
+        return res.status(200).json({ ok: true });
     } catch (error) {
         return res.status(500).json({
             ok: false,
