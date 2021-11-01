@@ -10,7 +10,7 @@ const validateFiles = (req, res = response, next) => {
             errors : errors.mapped(),
         });
     }
-    next();
+    return next();
 };
 
 module.exports = {
