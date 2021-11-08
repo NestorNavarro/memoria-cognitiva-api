@@ -6,7 +6,7 @@ const dbConnection = async() => {
             useNewUrlParser: true, 
             useUnifiedTopology: true,
         });
-        console.log("db online")
+        console.log("db");
     }catch (error) {
         console.log(error)
         throw new Error("Error on init db");

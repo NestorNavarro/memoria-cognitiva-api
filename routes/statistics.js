@@ -17,6 +17,13 @@ router.post("/:type/:userId",
     ]
 ,StatisticsController.saveResult);
 
+router.get("/scores/:type",
+    [
+        param("type").isIn(types).notEmpty(),
+        validateFiles,
+    ]
+,StatisticsController.getScores);
+
 router.get("/:type",
     [
         param("type").isIn(types).notEmpty(),

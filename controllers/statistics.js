@@ -32,7 +32,7 @@ const saveResult = async (req, res) => {
         user[type].average = total > 0 ? parseNumber((average + score) / total) : score;
 
         await user.save();
-        console.log(user[type]);
+
         return res.status(200).json({
             ok     : true,
             [`${type}Test`] : {
@@ -50,8 +50,48 @@ const saveResult = async (req, res) => {
 const getStatistics = async (req, res) => {
     try {
         const { type } = req.params;
+        const statistics = await UserModel.find({})
+            .where(`${[type].total}`)
+            .gt(0)
+            .select(`age ${type}.total ${type}.average`)
+            .exec();
 
-        
+        if (!statistics) {
+            return res.status(404).send({ err : "Data not found" });
+        }
+
+        await statistics;
+        return res.status(200).send({
+            ok : true, 
+            statistics,
+        })
+
+    } catch (err) {
+        console.error("[StatisticsController.getStatistics] ", err);
+
+        return res.status(500).send({ err : "Couldn't get statistics" });
+    }
+};
+
+const getScores = async (req, res) => {
+    try {
+        const { type } = req.params;
+        // const scores = await UserModel.find( { `${type}.total` : { $gt : 0 }, }).exec();
+
+        const scores = await UserModel.find({})
+            .where(`${[type].total}`)
+            .gt(0)
+            .select(`age ${type}.total ${type}.best`)
+            .exec();
+
+        if (!scores) {
+            return res.status(404).send({ err : "Data not found" });
+        }
+
+        await scores;
+        return res.status(200).send({
+            scores,
+        })
 
     } catch (err) {
         console.error("[StatisticsController.getStatistics] ", err);
@@ -61,6 +101,7 @@ const getStatistics = async (req, res) => {
 };
 
 module.exports = {
+    getScores,
     saveResult,
     getStatistics,
 };
