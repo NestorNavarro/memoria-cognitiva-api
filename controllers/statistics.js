@@ -17,19 +17,21 @@ const saveResult = async (req, res) => {
         }
 
         const { score } = req.body;
-        const parseNumber = value => !isNaN(parseFloat(value)) ? parseFloat(value) : 0;
+        const parseNumber = value => !isNaN(Number(value)) ? Number(value) : 0;
 
         const total   = parseNumber(user[type].total) + 1;
         const best    = parseNumber(user[type].best);
-        const average = parseNumber(user[type].average);
+        let   average = parseNumber(user[type].average);
   
         user[type].total   = total;
         if ( type === "cards") {
-            user[type].best = score < best ? score : best
+            user[type].best = total > 0 ? (score < best ? score : best) : score;
         } else {
             user[type].best = score > best ? score : best
         }
-        user[type].average = total > 0 ? parseNumber((average + score) / total) : score;
+        average =  total > 0 ? ((average + score) / total) : score;
+       
+        user[type].average = average.toFixed(2);
 
         await user.save();
 
