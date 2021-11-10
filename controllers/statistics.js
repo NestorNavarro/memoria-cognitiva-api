@@ -52,7 +52,7 @@ const getStatistics = async (req, res) => {
         const { type } = req.params;
         const statistics = await UserModel.find({})
             .where(`${[type].total}`)
-            .gt(0)
+            .sort(`${type}.average`)
             .select(`age ${type}.total ${type}.average`)
             .exec();
 
