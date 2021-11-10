@@ -22,15 +22,16 @@ const saveResult = async (req, res) => {
         const total   = parseNumber(user[type].total) + 1;
         const best    = parseNumber(user[type].best);
         let   average = parseNumber(user[type].average);
-  
-        user[type].total   = total;
+    
         if ( type === "cards") {
-            user[type].best = total > 0 ? (score < best ? score : best) : score;
+            user[type].best =(total > 1 ? (score < best ? score : best) : score);
         } else {
             user[type].best = score > best ? score : best
         }
+        
         average =  total > 0 ? ((average + score) / total) : score;
-       
+
+        user[type].total   = total;
         user[type].average = average.toFixed(2);
 
         await user.save();
